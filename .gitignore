@@ -3,12 +3,12 @@ node_modules/
 .next/
 out/
 
-# generated from the protected root assets/ folder
+# generated from the public showcase artwork
 public/generated-assets/
 
-# personal collection artwork (keep only the empty folder placeholder)
-assets/**
-!assets/.gitkeep
+# local browser-import scratch folders
+test_folder/
+.ci-assets/
 
 # tests and tooling
 coverage/

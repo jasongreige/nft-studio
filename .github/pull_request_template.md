@@ -6,7 +6,7 @@
 
 - [ ] `npm run check`
 - [ ] `npm run test:e2e` when behavior or UI changed
-- [ ] No personal or copyrighted artwork is included
+- [ ] No unauthorized artwork is included
 - [ ] Screenshots are attached for visible UI changes
 
 ## Notes

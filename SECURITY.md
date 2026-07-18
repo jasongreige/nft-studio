@@ -14,4 +14,4 @@ Use GitHub's **Report a vulnerability** option in the repository Security tab. I
 
 NFT Studio is a static client-side application. It has no account system, database, or application backend. Collection generation and local export occur in the browser.
 
-The deployed site still serves bundled trait images publicly. Do not deploy confidential artwork or commit it to Git history.
+The deployed site serves the licensed showcase traits publicly by design. Artwork selected through the browser remains session-local. Never commit or deploy confidential artwork.

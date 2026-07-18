@@ -1,6 +1,6 @@
 {
   "name": "nft-studio",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A private, browser-based NFT collection generator built with Next.js and TypeScript.",
   "license": "MIT",
   "repository": {

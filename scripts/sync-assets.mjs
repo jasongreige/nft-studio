@@ -57,7 +57,7 @@ async function main() {
       dimensions.add(`${metadata.width}x${metadata.height}`);
       await cp(source, path.join(targetLayer, entry.name), { force: true });
       const after = await readFile(source);
-      if (!before.equals(after)) throw new Error(`Protected source asset changed during sync: ${source}`);
+      if (!before.equals(after)) throw new Error(`Source asset changed during sync: ${source}`);
       const stem = path.parse(entry.name).name.toLowerCase();
       traits.push({
         id: stableId(layerEntry.name, entry.name),
@@ -82,8 +82,8 @@ async function main() {
     manifest.commonDimensions = { width, height };
   }
   await writeFile(path.join(generatedRoot, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-  console.log(`Synced ${manifest.layers.length} layers and ${manifest.layers.reduce((sum, layer) => sum + layer.traits.length, 0)} traits from protected assets/.`);
-  if (!manifest.layers.length) console.warn("No layers found. Add direct layer folders under assets/, then run npm run sync-assets.");
+  console.log(`Synced ${manifest.layers.length} layers and ${manifest.layers.reduce((sum, layer) => sum + layer.traits.length, 0)} traits from showcase assets/.`);
+  if (!manifest.layers.length) console.warn("No included showcase layers found. Browser folder selection and the generated demo remain available.");
   if (dimensions.size > 1) console.warn(`Found mixed dimensions: ${[...dimensions].join(", ")}. The app will resize with high-quality smoothing.`);
 }
 

@@ -1,47 +1,67 @@
 # NFT Studio
 
-A private, browser-based generator for layered NFT artwork. Add image folders, configure rarity through a guided interface, preview combinations, and export PNG images with marketplace-friendly JSON and CSV reports.
+A private, browser-based generator for layered NFT artwork. Choose a collection folder, configure trait rarity through a guided interface, preview combinations, and export PNG images with marketplace-friendly metadata.
 
-NFT Studio is built with Next.js and TypeScript. Artwork is composited on the user's device and is never uploaded to a backend.
+**Your artwork stays on your device.** NFT Studio has no image-upload server, account, database, analytics, or API key.
 
-## Why NFT Studio?
+[![CI](https://github.com/jasongreige/nft-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/jasongreige/nft-studio/actions/workflows/ci.yml)
+[![MIT License](https://img.shields.io/badge/license-MIT-8b5cf6.svg)](LICENSE)
 
-- Five-step interface designed for non-technical users
-- Automatic layer and trait detection from folders
+## Highlights
+
+- Choose an entire asset folder directly in the browser
+- Instant built-in demo with artwork generated at runtime
+- Included public showcase collection with 9 layers and 68 original traits
+- Five-step interface designed for artists and non-technical users
 - Drag-and-drop back-to-front layer ordering
-- Live decimal rarity totals with validation
-- Weighted random and exact-target distribution modes
-- Unique combination enforcement and reproducible random seeds
-- Browser previews before generating a collection
-- Detailed metadata containing source filenames and trait rarity
-- Direct-to-folder streaming for collections up to 10,000 images
-- ZIP downloads for smaller collections
-- No database, account, API key, or Python installation
+- Exact decimal rarity totals with save validation
+- Natural-random and target-matching distribution modes
+- Unique combinations with reproducible random seeds
+- Canvas previews and Web Worker generation
+- PNG images, token JSON, collection metadata, and CSV reports
+- Direct-to-folder streaming for large collections
+- ZIP fallback for broad browser support
+- Static Next.js export suitable for Vercel or any static host
 
-## Requirements
+## Fastest way to try it
 
-- [Node.js](https://nodejs.org/) 20.9 or newer
-- npm 10 or newer
-- A current desktop browser
-  - Chrome or Edge is recommended for large direct-to-folder exports.
-  - Other modern browsers can use ZIP export for up to 1,000 images.
-
-## Quick start
+Clone and start the application:
 
 ```bash
 git clone https://github.com/jasongreige/nft-studio.git
 cd nft-studio
 npm install
+npm run dev
 ```
 
-The public repository intentionally contains an empty `assets/` folder. Add your artwork before starting the app.
+Open [http://localhost:3000](http://localhost:3000), then choose one of three starting points:
+
+1. **Choose asset folder** — select your own collection folder privately.
+2. **Try the demo** — explore the complete workflow immediately.
+3. **Explore included art** — use the public 9-layer, 68-trait showcase collection.
+
+To deploy your own public copy without a backend:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jasongreige/nft-studio)
+
+## Included artwork license
+
+The repository includes an original showcase collection by Jason Greige under `assets/`. It contains nine layers and 68 PNG traits.
+
+The MIT License applies to the NFT Studio software, **not** to this artwork. The included artwork may be used for non-commercial purposes only with clear credit to **Jason Greige** and a tag to **[@jasongreige](https://github.com/jasongreige)** where the platform supports tagging. Commercial use, selling, minting, monetization, sublicensing, advertising, and redistribution as an asset pack require prior written consent.
+
+Read the complete [NFT Studio Artwork License](assets/ARTWORK_LICENSE.md) before reusing any included trait image. Artwork loaded through **Choose asset folder** remains subject to its own owner's terms.
+
+## Prepare your artwork
+
+Create one outer collection folder. Every direct subfolder is a layer, and every PNG or WEBP directly inside a layer is a trait.
 
 ```text
-assets/
+my-collection/
 ├── backgrounds/
 │   ├── blue.png
 │   ├── red.png
-│   └── space.png
+│   └── space.webp
 ├── bodies/
 │   ├── human.png
 │   └── robot.png
@@ -49,78 +69,71 @@ assets/
 └── hats/
 ```
 
-Start the development server:
+Select `my-collection`, not an individual layer folder.
 
-```bash
-npm run dev
-```
+### Artwork rules
 
-Open [http://localhost:3000](http://localhost:3000).
-
-## Preparing artwork
-
-### Folder rules
-
-- Every direct folder inside `assets/` is one layer.
-- Every PNG or WEBP directly inside a layer folder is one trait.
-- Hidden and unsupported files are ignored.
-- Folder and filenames are converted into readable labels automatically.
+- Supported traits are PNG and WEBP files.
+- Only images directly inside each layer folder are used.
+- Hidden files, unsupported files, and deeper nested folders are ignored.
+- `none.png` and `nothing.png` are recognized as transparent no-image traits.
+- Folder and filenames become readable display names automatically.
 - `gold_crown.png` becomes `Gold Crown`.
-- `nothing.png` or `none.png` becomes an optional no-image trait.
+- Source filenames are retained in metadata and reports.
 
 ### Image recommendations
 
-- Use transparent PNG files for layers drawn over other artwork.
-- Give every trait the same width and height whenever possible.
-- Keep artwork aligned to the same canvas coordinates.
-- Use descriptive filenames because original filenames appear in reports and metadata.
-- Optimize large source files before generating thousands of images.
+- Use transparent PNG files for every layer placed above the background.
+- Give all traits the same canvas dimensions whenever possible.
+- Align artwork to the same canvas coordinates before importing it.
+- Use descriptive filenames.
+- Optimize very large source images before generating thousands of tokens.
 
-If dimensions differ, NFT Studio displays a warning and resizes traits to the selected output dimensions with high-quality browser smoothing.
+When dimensions differ, NFT Studio shows a warning and uses high-quality browser resizing to fit the configured output canvas.
 
-### Refreshing assets
+## Browser folder selection and privacy
 
-Asset discovery runs automatically before `npm run dev` and `npm run build`. If the server is already running when artwork changes, stop it and restart, or run:
+The phrase **Choose asset folder** is intentional: files are selected, not uploaded.
 
-```bash
-npm run sync-assets
-```
+- The browser grants the page temporary read access only after you choose a folder.
+- Images become session-only object URLs used by previews and the generation worker.
+- Source bytes are never sent to an NFT Studio backend.
+- Refreshing or closing the page releases the selected files; choose the folder again to continue.
+- Preferences and rarity values can remain in browser local storage, but images do not.
+- **Change artwork** releases the current collection and returns to source selection.
 
-The synchronization script reads `assets/`, validates images, and creates ignored browser-ready files under `public/generated-assets/`. It never edits source artwork.
+Like any hosted software, the hosting provider still serves the application files. Review a deployment and its third-party policies before using confidential artwork. This repository contains no analytics or upload integration.
 
-## Using the interface
+## The five-step workflow
 
 ### 1. Layers
 
-Review every detected folder, trait count, and image size. Disable any complete layer that should not participate in generation.
+Review every detected folder, trait count, image size, and validation warning. Disable any complete layer that should not participate.
 
 ### 2. Layer order
 
-Arrange layers from back to front. The first row is composited first and appears furthest behind. Drag rows or use the accessible arrow controls.
+Arrange layers from back to front. The first row is drawn first and appears furthest behind. Drag rows or use the keyboard-accessible arrow controls.
 
 ### 3. Trait rarity
 
-Choose a layer and assign percentages to its enabled traits. The total updates immediately.
+Choose a layer and assign percentages to enabled traits. The total updates immediately using decimal arithmetic.
 
 - **Distribute equally** gives every enabled trait the same chance.
-- **Normalize to 100%** scales the current values proportionally.
+- **Normalize to 100%** scales current values proportionally.
 - **Set to zero** clears the draft values.
-- **Save this layer** is available only when enabled traits total exactly 100%.
+- **Save this layer** becomes available only at exactly 100%.
 
-Edits remain drafts until saved. Final generation is unavailable until every enabled layer has a valid saved distribution.
+Edits remain drafts until saved. Generation stays unavailable until every enabled layer has a valid saved distribution.
 
 ### 4. Preview
 
-Generate one or five temporary examples. A preview shows the selected source filename, configured trait rarity, and combined probability. It does not write files or change the final random sequence.
+Generate one or five temporary samples. Each preview shows selected source filenames, configured rarity, and the combined probability. Previewing writes nothing and does not alter final generation.
 
 ### 5. Generate
 
-Enter an Image name and collection size, then choose a distribution mode:
+Enter an image name and quantity, select a distribution mode, and choose an export method.
 
-- **Natural randomness** selects every trait independently using its configured probability. Actual collection percentages can vary.
-- **Match rarity targets** uses largest-remainder target counts and seeded shuffling to match configured percentages as closely as possible while keeping full combinations unique.
-
-The Image name controls both display titles and safe filenames. `My Babies` produces:
+`My Babies` produces names such as:
 
 ```text
 my_babies_1.png
@@ -129,19 +142,31 @@ my_babies_2.png
 my_babies_2.json
 ```
 
+## Distribution modes
+
+### Natural randomness
+
+Every trait is selected independently using its configured probability. This behaves like repeated dice rolls, so generated percentages naturally vary—especially for small collections.
+
+### Match rarity targets
+
+NFT Studio calculates per-layer target counts with largest-remainder allocation, seeded shuffling, and uniqueness repair. It attempts to match configured totals as closely as the collection size permits.
+
+Both modes enforce unique full trait combinations and stop when the requested count exceeds the theoretical maximum.
+
 ## Export options
 
 ### Choose output folder
 
-Recommended for large collections. In Chrome or Edge, the browser asks permission to create a timestamped folder and streams each completed file directly to disk. Completed images are not retained in browser memory.
+Recommended for large collections. Supporting browsers ask for write permission and stream each finished file into a new timestamped folder. Images do not accumulate in browser memory.
 
-The File System Access API requires localhost or HTTPS and an explicit user action. Cancelled or failed runs remove their incomplete timestamped folder when the browser permits it.
+Direct folder writing currently works best in Chrome or Edge and requires HTTPS or localhost.
 
 ### Download ZIP
 
-Works across more browsers but holds the archive in browser memory. NFT Studio limits ZIP generation to 1,000 images.
+Works in more browsers but builds the archive in memory. ZIP generation is limited to 1,000 NFTs.
 
-Every completed export contains:
+A completed export contains:
 
 ```text
 collection-name-collection-YYYYMMDD-HHMMSS/
@@ -159,7 +184,7 @@ collection-name-collection-YYYYMMDD-HHMMSS/
 
 ## Metadata
 
-Each token receives standard marketplace-style attributes plus explicit source information:
+Each token includes standard attributes and explicit source-trait information:
 
 ```json
 {
@@ -187,42 +212,58 @@ Each token receives standard marketplace-style attributes plus explicit source i
 }
 ```
 
-`combination_probability_percentage` multiplies the configured probabilities of all selected traits. It describes the configured probability of that combination, not a guaranteed observed frequency.
+None traits affect combination probability. They are omitted from marketplace `attributes` but retained in the explicit source-trait list so reports remain auditable.
 
-Set an optional IPFS or HTTPS base image URI under Advanced settings after uploading images. When left empty, metadata uses the generated filename.
+Set an optional IPFS or HTTPS base image URI under **Advanced settings** after uploading generated images. Leave it blank to use relative filenames.
 
-## Saved settings and privacy
+## Saved settings
 
-Configuration is saved automatically in browser local storage. Export Settings downloads layer order, rarity, naming, and advanced preferences as JSON. It never includes artwork.
+Settings are saved automatically in browser local storage. **Export settings** downloads layer order, rarities, naming, and advanced preferences as JSON.
 
-- Generation occurs locally in the browser.
-- There is no analytics integration, authentication, or backend storage.
-- Source artwork is excluded from this Git repository by default.
-- Review third-party hosting and browser policies before working with confidential artwork.
+Settings files do not contain images. A user-selected folder must be selected again after a refresh before imported settings can be reconciled with its stable layer and trait IDs.
 
-## Deploying to Vercel
+## Browser support
 
-The application is a static Next.js export and deploys cleanly to Vercel. However, files ignored by Git are not available during a Vercel build.
+- Use a current desktop browser for folder selection and generation.
+- Chrome or Edge is recommended for direct-to-folder export.
+- Firefox and Safari can use ZIP export where direct directory writing is unavailable.
+- Folder selection support may be limited in older browsers and embedded in-app browsers.
+- Large source images and ZIP exports consume browser memory.
 
-For a private local collection, keep artwork ignored and run NFT Studio locally. To deploy a collection-specific site, a fork owner must intentionally publish the required artwork—for example by changing the ignore policy or force-adding selected assets. Those files will then be publicly downloadable from the deployed website and Git history.
+## Deploying
 
-Do not publish artwork unless you own it and intend to make it public.
+NFT Studio uses Next.js static export and needs no runtime server. `npm run build` writes the deployable application to `out/`.
+
+You can deploy it to:
+
+- Vercel
+- GitHub Pages with suitable path configuration
+- Netlify
+- Cloudflare Pages
+- Any static web server
+
+Browser-selected artwork is read at runtime, so visitors can use their own collection without modifying the deployment. The included showcase artwork is also publicly downloadable and covered by its separate non-commercial [Artwork License](assets/ARTWORK_LICENSE.md).
 
 ## Development
+
+Requirements:
+
+- Node.js 20.9 or newer
+- npm 10 or newer
 
 Useful commands:
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Synchronize assets and start the local app |
-| `npm run sync-assets` | Rebuild the browser asset manifest |
-| `npm run check` | Run linting, TypeScript, and unit tests |
-| `npm test` | Run Vitest unit and integration tests |
-| `npm run test:e2e` | Run Chromium user-flow tests |
-| `npm run build` | Validate assets and create the static production build |
-| `npm start` | Serve an existing `out/` production build |
+| `npm run dev` | Prepare the included showcase and start the application |
+| `npm run sync-assets` | Rebuild the included showcase manifest |
+| `npm run check` | Run ESLint, TypeScript, and unit tests |
+| `npm test` | Run Vitest tests |
+| `npm run test:e2e` | Run Playwright user-flow tests |
+| `npm run build` | Create the production static export |
+| `npm start` | Serve an existing `out/` build |
 
-Install the Playwright browser once before running end-to-end tests:
+Install Playwright Chromium once before running end-to-end tests:
 
 ```bash
 npx playwright install chromium
@@ -231,51 +272,56 @@ npx playwright install chromium
 ### Architecture
 
 ```text
-assets/                         Private local source artwork (ignored)
-scripts/sync-assets.mjs         Read-only asset validation and manifest build
-src/components/                 Guided React interface
-src/lib/                        Framework-independent generation logic
-src/workers/generator.worker.ts Image compositor and report generator
-src/test/                       Unit and integration tests
-e2e/                            Playwright browser tests
+src/lib/asset-input.ts             Browser folder parsing and generated demo
+assets/                            Public showcase artwork (separate license)
+scripts/sync-assets.mjs            Read-only showcase synchronization
+src/components/                    Guided React interface
+src/lib/                           Framework-independent generation logic
+src/workers/generator.worker.ts    Sequential compositor and report generator
+src/test/                          Unit and integration tests
+e2e/                               Playwright user-flow tests
 ```
 
 The Web Worker plans unique combinations, caches decoded traits, composites through `OffscreenCanvas`, and uses an acknowledgement protocol so only one completed image waits to be written at a time.
 
+GitHub Actions creates disposable geometric fixtures, keeping automated tests independent from the showcase artwork.
+
 ## Troubleshooting
 
-### “Add your artwork to begin”
+### The selected folder is rejected
 
-The repository ships without artwork. Add at least one layer folder containing PNG or WEBP files under `assets/`, then restart `npm run dev`.
+Select one outer collection folder containing direct layer folders. Images placed directly in the outer folder or more than one folder deep are not treated as traits.
+
+### My selected collection disappeared after refresh
+
+This is intentional for privacy. Browser file permissions are session-scoped in this workflow. Select the folder again; saved settings will be reconciled by stable folder and filenames.
+
+### A layer does not appear
+
+Confirm that it is a direct folder and contains at least one valid PNG or WEBP directly inside it.
 
 ### Rarity cannot be saved
 
-Enabled trait values must total exactly 100%. Use Normalize or Distribute equally, then save that layer.
+Enabled traits must total exactly 100%. Use **Normalize to 100%** or **Distribute equally**, then save the layer.
 
 ### Not enough unique combinations
 
-Reduce the requested collection size, enable more traits, or assign a positive rarity to additional traits.
+Reduce the collection size, enable more traits, or give additional traits a positive rarity.
 
-### Exact distribution cannot be created
+### Preview or generation fails
 
-Some target counts cannot form enough unique complete combinations. Reduce the amount, adjust rarity, or use Natural randomness.
+Verify that all files are valid PNG or WEBP images. Try current Chrome or Edge, reduce output dimensions, and close memory-heavy tabs.
 
-### Folder export is unavailable
+### Direct folder export is unavailable
 
-Use current Chrome or Edge on localhost/HTTPS, or use ZIP export for collections up to 1,000.
+Use Chrome or Edge on HTTPS or localhost, or select **Download ZIP**.
 
-### Artwork changes do not appear
+## Contributing and security
 
-Restart the development server or run `npm run sync-assets`, then refresh the page.
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Report security concerns according to [SECURITY.md](SECURITY.md).
 
-## Contributing
-
-Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request. Never include copyrighted or personal collection artwork in a contribution.
-
-## Security
-
-Please report vulnerabilities through GitHub private vulnerability reporting as described in [SECURITY.md](SECURITY.md).
+Do not include artwork you do not own or have permission to distribute in issues, test fixtures, or pull requests.
 
 ## License
 
-Released under the [MIT License](LICENSE).
+NFT Studio source code is available under the [MIT License](LICENSE). The 68 included showcase traits are covered separately by the [NFT Studio Artwork License](assets/ARTWORK_LICENSE.md): non-commercial use requires attribution and commercial use requires prior written consent from Jason Greige. User-selected artwork remains subject to its own ownership and licensing terms.
