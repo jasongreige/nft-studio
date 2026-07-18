@@ -1,0 +1,23 @@
+# dependencies and Next.js output
+node_modules/
+.next/
+out/
+
+# generated from the protected root assets/ folder
+public/generated-assets/
+
+# personal collection artwork (keep only the empty folder placeholder)
+assets/**
+!assets/.gitkeep
+
+# tests and tooling
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# local settings
+.env*
+!.env.example
+.DS_Store
+Thumbs.db
