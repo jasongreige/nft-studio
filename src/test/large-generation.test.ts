@@ -4,8 +4,8 @@ import { defaultSettings, toGenerationConfig } from "@/lib/settings";
 import type { AssetManifest } from "@/lib/types";
 
 describe("large collection planning", () => {
-  it("plans 10,000 unique exact-distribution combinations from the real manifest", async () => {
-    const counts = [3, 9, 3, 9, 2, 10, 7, 13, 12];
+  it("plans 10,000 unique exact-distribution combinations from a synthetic manifest", async () => {
+    const counts = [3, 9, 3, 9, 2, 10, 7, 13, 11];
     const manifest: AssetManifest = {
       version: 1,
       generatedAt: "test",

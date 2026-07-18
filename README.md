@@ -11,7 +11,6 @@ A private, browser-based generator for layered NFT artwork. Choose a collection 
 
 - Choose an entire asset folder directly in the browser
 - Instant built-in demo with artwork generated at runtime
-- Included public showcase collection with 9 layers and 68 original traits
 - Five-step interface designed for artists and non-technical users
 - Drag-and-drop back-to-front layer ordering
 - Exact decimal rarity totals with save validation
@@ -34,23 +33,14 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000), then choose one of three starting points:
+Open [http://localhost:3000](http://localhost:3000), then choose one of two starting points:
 
 1. **Choose asset folder** — select your own collection folder privately.
 2. **Try the demo** — explore the complete workflow immediately.
-3. **Explore included art** — use the public 9-layer, 68-trait showcase collection.
 
 To deploy your own public copy without a backend:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jasongreige/nft-studio)
-
-## Included artwork license
-
-The repository includes an original showcase collection by Jason Greige under `assets/`. It contains nine layers and 68 PNG traits.
-
-The MIT License applies to the NFT Studio software, **not** to this artwork. The included artwork may be used for non-commercial purposes only with clear credit to **Jason Greige** and a tag to **[@jasongreige](https://github.com/jasongreige)** where the platform supports tagging. Commercial use, selling, minting, monetization, sublicensing, advertising, and redistribution as an asset pack require prior written consent.
-
-Read the complete [NFT Studio Artwork License](assets/ARTWORK_LICENSE.md) before reusing any included trait image. Artwork loaded through **Choose asset folder** remains subject to its own owner's terms.
 
 ## Prepare your artwork
 
@@ -194,16 +184,16 @@ Each token includes standard attributes and explicit source-trait information:
   "edition": 1,
   "attributes": [
     {
-      "trait_type": "Back Accessories",
-      "value": "Cape"
+      "trait_type": "Background",
+      "value": "Blue"
     }
   ],
   "properties": {
     "traits": [
       {
-        "layer": "back accessories",
-        "filename": "cape.png",
-        "display_name": "Cape",
+        "layer": "backgrounds",
+        "filename": "blue.png",
+        "display_name": "Blue",
         "configured_rarity_percentage": 12.5
       }
     ],
@@ -242,7 +232,7 @@ You can deploy it to:
 - Cloudflare Pages
 - Any static web server
 
-Browser-selected artwork is read at runtime, so visitors can use their own collection without modifying the deployment. The included showcase artwork is also publicly downloadable and covered by its separate non-commercial [Artwork License](assets/ARTWORK_LICENSE.md).
+Browser-selected artwork is read at runtime, so visitors can use their own collection without modifying the deployment or uploading images to a server.
 
 ## Development
 
@@ -255,8 +245,7 @@ Useful commands:
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Prepare the included showcase and start the application |
-| `npm run sync-assets` | Rebuild the included showcase manifest |
+| `npm run dev` | Start the local development server |
 | `npm run check` | Run ESLint, TypeScript, and unit tests |
 | `npm test` | Run Vitest tests |
 | `npm run test:e2e` | Run Playwright user-flow tests |
@@ -273,8 +262,6 @@ npx playwright install chromium
 
 ```text
 src/lib/asset-input.ts             Browser folder parsing and generated demo
-assets/                            Public showcase artwork (separate license)
-scripts/sync-assets.mjs            Read-only showcase synchronization
 src/components/                    Guided React interface
 src/lib/                           Framework-independent generation logic
 src/workers/generator.worker.ts    Sequential compositor and report generator
@@ -284,7 +271,7 @@ e2e/                               Playwright user-flow tests
 
 The Web Worker plans unique combinations, caches decoded traits, composites through `OffscreenCanvas`, and uses an acknowledgement protocol so only one completed image waits to be written at a time.
 
-GitHub Actions creates disposable geometric fixtures, keeping automated tests independent from the showcase artwork.
+Tests create disposable artwork at runtime and do not require an artwork collection in the repository.
 
 ## Troubleshooting
 
@@ -324,4 +311,4 @@ Do not include artwork you do not own or have permission to distribute in issues
 
 ## License
 
-NFT Studio source code is available under the [MIT License](LICENSE). The 68 included showcase traits are covered separately by the [NFT Studio Artwork License](assets/ARTWORK_LICENSE.md): non-commercial use requires attribution and commercial use requires prior written consent from Jason Greige. User-selected artwork remains subject to its own ownership and licensing terms.
+NFT Studio source code is available under the [MIT License](LICENSE). Artwork selected in the browser remains subject to its owner's terms and is never included in this repository by the app.

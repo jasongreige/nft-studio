@@ -18,7 +18,7 @@ Thank you for helping improve NFT Studio.
 5. Run `npm run check` before committing.
 6. Run `npm run test:e2e` for interface or generation changes.
 
-The showcase under `assets/` is covered by its separate [Artwork License](assets/ARTWORK_LICENSE.md). Do not replace or add artwork in a code pull request unless that change has been discussed with the maintainer. Tests that need artwork must create disposable fixtures rather than depend on a contributor's collection.
+Do not add artwork collections to the repository. Tests that need artwork must create disposable fixtures at runtime.
 
 ## Code expectations
 

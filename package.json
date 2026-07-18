@@ -23,10 +23,7 @@
     "node": ">=20.9.0"
   },
   "scripts": {
-    "sync-assets": "node scripts/sync-assets.mjs",
-    "predev": "npm run sync-assets",
     "dev": "next dev",
-    "prebuild": "npm run sync-assets",
     "build": "next build",
     "start": "serve out",
     "lint": "eslint .",

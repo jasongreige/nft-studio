@@ -1,22 +1,17 @@
 import { expect, test } from "@playwright/test";
 
-async function openBundledAssets(page: import("@playwright/test").Page) {
-  await page.goto("/");
-  await page.getByRole("button", { name: /Explore included art/ }).click();
-}
-
 async function openDemo(page: import("@playwright/test").Page) {
   await page.goto("/");
   await page.getByRole("button", { name: /Try the demo/ }).click();
   await expect(page.getByRole("heading", { name: "Your artwork layers" })).toBeVisible();
 }
 
-test("offers private folder selection, a demo, and included artwork", async ({ page }) => {
+test("offers private folder selection and a generated demo", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Turn your artwork into a collection." })).toBeVisible();
   await expect(page.getByRole("button", { name: /Choose asset folder/ })).toBeVisible();
   await expect(page.getByRole("button", { name: /Try the demo/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /Explore included art/ })).toBeVisible();
+  await expect(page.locator(".source-card")).toHaveCount(2);
   await expect(page.getByText("No uploads", { exact: true })).toBeVisible();
 });
 
@@ -27,10 +22,9 @@ test("returns to source selection when the NFT Studio logo is clicked", async ({
 });
 
 test("guides the user through detected assets and live rarity", async ({ page }) => {
-  await openBundledAssets(page);
+  await openDemo(page);
   await expect(page.getByRole("heading", { name: "Your artwork layers" })).toBeVisible();
-  await expect(page.locator(".layer-card")).toHaveCount(9);
-  await expect(page.getByText("68 traits", { exact: true })).toBeVisible();
+  await expect(page.locator(".layer-card")).toHaveCount(4);
   await page.getByRole("button", { name: "Trait rarity" }).click();
   await expect(page.getByRole("heading", { name: "Set trait rarity" })).toBeVisible();
   const firstInput = page.locator(".percentage-input input").first();
