@@ -3,12 +3,9 @@ node_modules/
 .next/
 out/
 
-# generated from the public showcase artwork
-public/generated-assets/
-
 # local browser-import scratch folders
 test_folder/
-.ci-assets/
+/assets/
 
 # tests and tooling
 coverage/

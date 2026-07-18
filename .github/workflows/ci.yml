@@ -12,9 +12,6 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      NFT_STUDIO_ASSETS_DIR: ${{ github.workspace }}/.ci-assets
-      NFT_STUDIO_PUBLIC_DIR: ${{ github.workspace }}/public
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -27,14 +24,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Create disposable test artwork
-        run: node scripts/create-ci-assets.mjs
-        env:
-          CI: "true"
-
-      - name: Synchronize test artwork
-        run: npm run sync-assets
 
       - name: Lint, type-check, and unit test
         run: npm run check
