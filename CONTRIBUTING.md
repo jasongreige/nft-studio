@@ -7,18 +7,18 @@ Thank you for helping improve NFT Studio.
 - Search existing issues before opening a new one.
 - Use an issue to discuss large features or architectural changes first.
 - Keep pull requests focused on one problem.
-- Never commit personal, licensed, or copyrighted collection artwork.
+- Never commit artwork you do not own or have permission to distribute.
 
 ## Local development
 
 1. Fork and clone the repository.
 2. Install dependencies with `npm install`.
-3. Add your own temporary PNG or WEBP fixtures under `assets/`.
-4. Start the app with `npm run dev`.
+3. Start the app with `npm run dev`.
+4. Use **Try the demo** or **Choose asset folder** in the browser.
 5. Run `npm run check` before committing.
 6. Run `npm run test:e2e` for interface or generation changes.
 
-Artwork under `assets/` and generated files under `public/generated-assets/` are ignored. Tests that need artwork must create disposable fixtures rather than depend on a contributor's collection.
+The showcase under `assets/` is covered by its separate [Artwork License](assets/ARTWORK_LICENSE.md). Do not replace or add artwork in a code pull request unless that change has been discussed with the maintainer. Tests that need artwork must create disposable fixtures rather than depend on a contributor's collection.
 
 ## Code expectations
 

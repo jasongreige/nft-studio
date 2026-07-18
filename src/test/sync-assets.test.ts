@@ -38,7 +38,7 @@ describe("asset synchronization", () => {
     }
   });
 
-  it("detects layers and never changes protected sources", async () => {
+  it("detects layers and never changes source images", async () => {
     const root = process.cwd();
     const temporary = await mkdtemp(path.join(os.tmpdir(), "nft-studio-sync-"));
     const assets = path.join(temporary, "assets");
